@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { name: 'Blanchard', size: 2, x: 20, y: 60, z: -40, texture: 'image/epsilon_coal.png', layer: 3 },
             { name: 'Tau Ceti', size: 2, x: -20, y: 60, z: -20, texture: 'image/tau_ceti.png', layer: 3 },
             { name: 'Hinn', size: 2, x: -40, y: 60, z: 0, texture: 'image/tau_ceti.png', layer: 3 },
-            { name: 'Gorgon', size: 2, x: -40, y: 60, z: -20, texture: 'image/tau_ceti.png', layer: 3 },
+            { name: 'Gorgon', size: 2, x: -40, y: 60, z: -40, texture: 'image/tau_ceti.png', layer: 3 },
             { name: 'Forlorn', size: 2, x: -20, y: 60, z: 0, texture: 'image/tau_ceti.png', layer: 3 },
             // layer 4
             { name: 'Macroposopus', size: 2, x: -40, y: 80, z: 0, texture: 'image/tau_ceti.png', layer: 4 },
@@ -241,11 +241,13 @@ document.addEventListener('DOMContentLoaded', () => {
             { from: 'Blanchard', to: 'Terill' },
             { from: 'Archimedes', to: 'Enobarus' },
             { from: 'Szarik', to: 'Szalik' },
+            { from: 'Gorgon', to: 'Camel' },
             // layer 4
             { from: 'Macroposopus', to: 'Voltemand' },
             { from: 'Camel', to: 'Voltemand' },
             { from: 'Shylock', to: 'Voltemand' },
             { from: 'Paxton', to: 'Willcox' },
+            { from: 'Paxton', to: 'Shylock' },
             { from: 'Paxton', to: 'Stark' },
             { from: 'Terill', to: 'Willcox' },
             { from: 'Terill', to: 'Stark' },
