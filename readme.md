@@ -2,4 +2,4 @@
 
 Map for the world of Polypheme - created by a very american pole, brought to 3d because his slideshow was ass. 
 
-#### ngl i stole a lot of this
+#### ngl i borrowed a lot of this
