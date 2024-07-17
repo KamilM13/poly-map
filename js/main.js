@@ -4,8 +4,6 @@ import { FontLoader } from "https://unpkg.com/three@0.166.1/examples/jsm/loaders
 import { TextGeometry } from "https://unpkg.com/three@0.166.1/examples/jsm/geometries/TextGeometry.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const textureLoader = new THREE.TextureLoader();
-    const earthTexture = textureLoader.load("./image/earth.png");
 
     let textLabels = [];  // Initialize textLabels array
 
@@ -53,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.camera.position.z = 100;
 
             this.scene = new THREE.Scene();
-
+            
             this.renderer = new THREE.WebGLRenderer({
                 canvas: document.getElementById("myThreeJsCanvas"),
                 antialias: true,
