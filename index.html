@@ -11,13 +11,21 @@
       }
     </style>
     <title>Polytheme Interactive Map</title>
-    <meta name="author" content="KamilM13" />
-    <meta name="robots" content="index, follow" />
     <meta
       name="description"
       content="PolyMap - Interactive system map for our the Expanse ttRPG playthrough."
     />
     <link rel="icon" type="image/png" href="./image/solar-system.png" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.166.1/build/three.module.js",
+          "OrbitControls": "https://unpkg.com/three@0.166.1/examples/jsm/controls/OrbitControls.js",
+          "FontLoader": "https://unpkg.com/three@0.166.1/examples/jsm/loaders/FontLoader.js",
+          "TextGeometry": "https://unpkg.com/three@0.166.1/examples/jsm/geometries/TextGeometry.js"
+        }
+      }
+    </script>
   </head>
   <body>
     <script type="module" src="./js/main.js"></script>
