@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     class SceneInit {
-        constructor(fov = 36, camera, scene, controls, renderer) {
+        constructor(fov = 75, camera, scene, controls, renderer) {
             this.fov = fov;
             this.scene = scene;
             this.camera = camera;
@@ -46,9 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 1,
                 1000
             );
-            this.camera.position.x = 100;
+            this.camera.position.x = 75;
             this.camera.position.y = 300;
-            this.camera.position.z = 100;
+            this.camera.position.z = 75;
 
             this.scene = new THREE.Scene();
             
@@ -58,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             this.renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(this.renderer.domElement);
-
             this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
             window.addEventListener("resize", () => this.onWindowResize(), false);

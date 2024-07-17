@@ -7,7 +7,35 @@
     <style>
         body {
             overflow: hidden;
-            margin: 0px;
+            margin: 0;
+        }
+        #legend {
+            background-color: black;
+            color: white;
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            padding: 10px;
+            font-family: Arial, sans-serif;
+            border-radius: 5px;
+            display: none; /* Initially hidden */
+        }
+        #legend span {
+            display: block;
+            font-weight: bold;
+            margin: 2px 0;
+        }
+        #toggleButton {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            border-radius: 5px;
         }
     </style>
     <script type="importmap">
@@ -23,7 +51,30 @@
     <link rel="icon" type="image/png" href="./image/solar-system.png" />
 </head>
 <body>
-    <canvas id="myThreeJsCanvas"></canvas>
-    <script src="./js/main.js" type="module"></script>
+  <div id="legend">
+    <span style="color: red;">Alpha Centauri</span>
+    <span style="color: rgb(177, 0, 177);">United Epsilon Coalition</span>
+    <span style="color: rgb(42, 174, 250);">Congress of Tau Ceti</span>
+    <span style="color: yellow;">Valhalla Systems</span>
+    <span style="color: rgb(160, 160, 160);">Unclaimed</span>
+    <span>___</span>
+  </div>
+  <button id="toggleButton">Show Legend</button>
+  <canvas id="myThreeJsCanvas"></canvas>
+  <script type="module">
+    const toggleButton = document.getElementById('toggleButton');
+    const legend = document.getElementById('legend');
+
+    toggleButton.addEventListener('click', () => {
+      if (legend.style.display === 'none') {
+        legend.style.display = 'block';
+        toggleButton.textContent = 'Hide Legend';
+      } else {
+        legend.style.display = 'none';
+        toggleButton.textContent = 'Show Legend';
+      }
+    });
+  </script>
+  <script src="./js/main.js" type="module"></script>
 </body>
 </html>
