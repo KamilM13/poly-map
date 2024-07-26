@@ -425,8 +425,12 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const switchToSystemScene = (systemName) => {
+    const whitelist = ['Visage'];
+    const includes = whitelist.includes(systemName);
     // Redirect to the corresponding system HTML file
-    window.location.href = `${systemName}.html`;
+    if (includes) {
+        window.location.href = `${systemName}.html`;
+    }
     };
 
   initScene();
