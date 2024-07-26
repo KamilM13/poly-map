@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.fov,
                 window.innerWidth / window.innerHeight,
                 0.1,
-                4000
+                12000
             );
-            this.camera.position.set(0, 30, 500);
+            this.camera.position.set(0, 2500, 4000);
 
             this.scene = new THREE.Scene();
 
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Background
         const textureLoader = new THREE.TextureLoader();
-        const bgGeometry = new THREE.SphereGeometry(2000, 100, 100);
+        const bgGeometry = new THREE.SphereGeometry(6000, 100, 100);
         const bgMaterial = new THREE.MeshBasicMaterial({
             map: textureLoader.load("image/Stars Background.png"),
             side: THREE.DoubleSide,
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sceneInit.scene.add(bg);
 
         // Star
-        const starGeometry = new THREE.SphereGeometry(109, 400, 200);
+        const starGeometry = new THREE.SphereGeometry(96, 400, 200);
         const starMaterial = new THREE.MeshBasicMaterial({
             map: textureLoader.load("image/Red Star.jpg"),
         });
@@ -135,20 +135,33 @@ document.addEventListener('DOMContentLoaded', () => {
         // Create planets with specific textures
         const planetSpecs = [
             {
-                size: 24,
+                size: 36,
                 texturePath: "image/Ceres.jpg",
                 orbitRadius: 250,
-                orbitSpeed: 0.00001,
+                orbitSpeed: 0.0001,
                 moons: [
                     {
-                        size: 5,
+                        size: 10,
                         texturePath: "image/Red Moon.jpg",
-                        orbitRadius: 40,
-                        orbitSpeed: 0.0001
+                        orbitRadius: 60,
+                        orbitSpeed: 0.001
                     }
                 ]
             },
-
+            {
+              size: 48,
+              texturePath: "image/Earth.jpeg",
+              orbitRadius: 750,
+              orbitSpeed: 0.00002,
+              moons: []
+            },
+            {
+              size: 18,
+              texturePath: "image/Red Moon.jpg",
+              orbitRadius: 2250,
+              orbitSpeed: 0.00001,
+              moons: []
+            },
             // Add more planet specifications as needed
         ];
 

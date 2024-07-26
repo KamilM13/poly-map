@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visage System</title>
+    <style>
+        body {
+            overflow: hidden;
+            margin: 0;
+        }
+        #returnButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            border-radius: 5px;
+        }
+    </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.138.0/build/three.module.js",
+                "OrbitControls": "https://unpkg.com/three@0.138.0/examples/jsm/controls/OrbitControls.js"
+            }
+        }
+    </script>
+    <link rel="icon" type="image/png" href="./image/solar-system.png" />
+</head>
+<body>
+    <button id="returnButton">Return to Main</button>
+    <canvas id="myThreeJsCanvas"></canvas>
+    <script type="module">
+        document.getElementById('returnButton').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+    </script>
+    <script src="./js/visage.js" type="module"></script>
+</body>
+</html>
