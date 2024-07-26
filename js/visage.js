@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const createLabel = (text, parent) => {
         const loader = new FontLoader();
-        loader.load('https://github.com/KamilM13/poly-map/blob/main/font.json', function (font) {
+        loader.load('font2.json', function (font) {
             const textGeometry = new TextGeometry(text, {
                 font: font,
                 size: 100,
