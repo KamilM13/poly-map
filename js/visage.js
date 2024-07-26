@@ -118,19 +118,22 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const createLabel = (text, parent) => {
-        const loader = new FontLoader();
-        loader.load('font.json', function (font) {
-            const textGeometry = new TextGeometry(text, {
-                font: font,
-                size: 100,
+        return new Promise((resolve) => {
+            const loader = new FontLoader();
+            loader.load('font.json', function (font) {
+                const textGeometry = new TextGeometry(text, {
+                    font: font,
+                    size: 100,
+                });
+                const textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+                const mesh = new THREE.Mesh(textGeometry, textMaterial);
+                mesh.position.set(0, 50, 0);
+                mesh.scale.set(0.15, 0.15, 0.15);
+                mesh.name = `${text}_label`;
+                parent.add(mesh);
+                textLabels.push(mesh);
+                resolve();
             });
-            const textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-            const mesh = new THREE.Mesh(textGeometry, textMaterial);
-            mesh.position.set(0, 50, 0);
-            mesh.scale.set(0.15, 0.15, 0.15);
-            mesh.name = `${text}_label`;
-            parent.add(mesh);
-            textLabels.push(mesh);
         });
     };
 
@@ -157,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sceneInit.scene.add(starMesh);
 
         // Create label for the star
-        createLabel('Visage', starMesh);
+        const labelPromises = [createLabel('Visage', starMesh)];
 
         // Create planets with specific textures
         const planetSpecs = [
@@ -205,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
             planetGroup.add(planetMesh);
 
             // Create label for the planet
-            createLabel(planet.name, planetMesh);
+            labelPromises.push(createLabel(planet.name, planetMesh));
 
             if (planet.showOrbit) {
                 const orbitPath = planet.createOrbitPath();
@@ -219,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 planetGroup.add(moonMesh);
 
                 // Create label for the moon
-                createLabel(moon.name, moonMesh);
+                labelPromises.push(createLabel(moon.name, moonMesh));
 
                 if (planet.showOrbit) {
                     const moonOrbitPath = moon.createOrbitPath();
@@ -234,6 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
             planet.planetGroup = planetGroup;
             planet.planetMesh = planetMesh;
         });
+
+        // Wait for all labels to be created
+        await Promise.all(labelPromises);
 
         const animate = () => {
             const time = performance.now();
