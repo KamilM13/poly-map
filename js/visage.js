@@ -1,7 +1,11 @@
 import * as THREE from "https://unpkg.com/three@0.166.1/build/three.module.js";
 import { OrbitControls } from "https://unpkg.com/three@0.166.1/examples/jsm/controls/OrbitControls.js";
+import { FontLoader } from "https://unpkg.com/three@0.166.1/examples/jsm/loaders/FontLoader.js";
+import { TextGeometry } from "https://unpkg.com/three@0.166.1/examples/jsm/geometries/TextGeometry.js";
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    let textLabels = [];  // Initialize textLabels array
 
     class SceneInit {
         constructor(fov = 60, camera, scene, controls, renderer) {
@@ -17,9 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.fov,
                 window.innerWidth / window.innerHeight,
                 0.1,
-                12000
+                8000
             );
-            this.camera.position.set(0, 2500, 4000);
+            this.camera.position.set(0, 1250, 2000);
 
             this.scene = new THREE.Scene();
 
@@ -51,7 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     class CelestialBody {
-        constructor(size, texturePath, orbitRadius, orbitSpeed) {
+        constructor(name, size, texturePath, orbitRadius, orbitSpeed) {
+            this.name = name;
             this.size = size;
             this.texturePath = texturePath;
             this.orbitRadius = orbitRadius;
@@ -63,7 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const material = new THREE.MeshBasicMaterial({
                 map: new THREE.TextureLoader().load(this.texturePath),
             });
-            return new THREE.Mesh(geometry, material);
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.name = this.name;
+            return mesh;
         }
 
         createOrbitPath() {
@@ -82,8 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     class Planet extends CelestialBody {
-        constructor(size, texturePath, orbitRadius, orbitSpeed, showOrbit = false) {
-            super(size, texturePath, orbitRadius, orbitSpeed);
+        constructor(name, size, texturePath, orbitRadius, orbitSpeed, showOrbit = false) {
+            super(name, size, texturePath, orbitRadius, orbitSpeed);
             this.moons = [];
             this.showOrbit = showOrbit;
         }
@@ -96,12 +103,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const createPlanets = (planetSpecs, showOrbitPaths) => {
         const planets = [];
         planetSpecs.forEach((spec) => {
-            const { size, texturePath, orbitRadius, orbitSpeed, moons } = spec;
-            const planet = new Planet(size, texturePath, orbitRadius, orbitSpeed, showOrbitPaths);
+            const { name, size, texturePath, orbitRadius, orbitSpeed, moons } = spec;
+            const planet = new Planet(name, size, texturePath, orbitRadius, orbitSpeed, showOrbitPaths);
 
             moons.forEach((moonSpec) => {
-                const { size: moonSize, texturePath: moonTexturePath, orbitRadius: moonOrbitRadius, orbitSpeed: moonOrbitSpeed } = moonSpec;
-                const moon = new CelestialBody(moonSize, moonTexturePath, moonOrbitRadius, moonOrbitSpeed);
+                const { name: moonName, size: moonSize, texturePath: moonTexturePath, orbitRadius: moonOrbitRadius, orbitSpeed: moonOrbitSpeed } = moonSpec;
+                const moon = new CelestialBody(moonName, moonSize, moonTexturePath, moonOrbitRadius, moonOrbitSpeed);
                 planet.addMoon(moon);
             });
 
@@ -110,13 +117,30 @@ document.addEventListener('DOMContentLoaded', () => {
         return planets;
     };
 
+    const createLabel = (text, parent) => {
+        const loader = new FontLoader();
+        loader.load('font.json', function (font) {
+            const textGeometry = new TextGeometry(text, {
+                font: font,
+                size: 100,
+            });
+            const textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const mesh = new THREE.Mesh(textGeometry, textMaterial);
+            mesh.position.set(0, 50, 0);
+            mesh.scale.set(0.15, 0.15, 0.15);
+            mesh.name = `${text}_label`;
+            parent.add(mesh);
+            textLabels.push(mesh);
+        });
+    };
+
     const initScene = async () => {
         const sceneInit = new SceneInit();
         sceneInit.initScene();
 
         // Background
         const textureLoader = new THREE.TextureLoader();
-        const bgGeometry = new THREE.SphereGeometry(6000, 100, 100);
+        const bgGeometry = new THREE.SphereGeometry(4000, 100, 100);
         const bgMaterial = new THREE.MeshBasicMaterial({
             map: textureLoader.load("image/Stars Background.png"),
             side: THREE.DoubleSide,
@@ -125,42 +149,49 @@ document.addEventListener('DOMContentLoaded', () => {
         sceneInit.scene.add(bg);
 
         // Star
-        const starGeometry = new THREE.SphereGeometry(96, 400, 200);
+        const starGeometry = new THREE.SphereGeometry(48, 400, 200);
         const starMaterial = new THREE.MeshBasicMaterial({
             map: textureLoader.load("image/Red Star.jpg"),
         });
         const starMesh = new THREE.Mesh(starGeometry, starMaterial);
         sceneInit.scene.add(starMesh);
 
+        // Create label for the star
+        createLabel('Star', starMesh);
+
         // Create planets with specific textures
         const planetSpecs = [
             {
-                size: 36,
+                name: "Visage I",
+                size: 18,
                 texturePath: "image/Ceres.jpg",
-                orbitRadius: 250,
+                orbitRadius: 100,
                 orbitSpeed: 0.0001,
                 moons: [
                     {
-                        size: 10,
+                        name: "Draper Station",
+                        size: 5,
                         texturePath: "image/Red Moon.jpg",
-                        orbitRadius: 60,
+                        orbitRadius: 25,
                         orbitSpeed: 0.001
                     }
                 ]
             },
             {
-              size: 48,
-              texturePath: "image/Earth.jpeg",
-              orbitRadius: 750,
-              orbitSpeed: 0.00002,
-              moons: []
+                name: "Visage II",
+                size: 24,
+                texturePath: "image/Earth.jpeg",
+                orbitRadius: 300,
+                orbitSpeed: 0.00002,
+                moons: []
             },
             {
-              size: 18,
-              texturePath: "image/Red Moon.jpg",
-              orbitRadius: 2250,
-              orbitSpeed: 0.00001,
-              moons: []
+                name: "Dwarf Planet",
+                size: 9,
+                texturePath: "image/Red Moon.jpg",
+                orbitRadius: 900,
+                orbitSpeed: 0.00001,
+                moons: []
             },
             // Add more planet specifications as needed
         ];
@@ -173,6 +204,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const planetMesh = planet.createMesh();
             planetGroup.add(planetMesh);
 
+            // Create label for the planet
+            createLabel(planet.name, planetMesh);
+
             if (planet.showOrbit) {
                 const orbitPath = planet.createOrbitPath();
                 orbitPath.rotateX(-Math.PI/2);
@@ -183,6 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const moonMesh = moon.createMesh();
                 moonMesh.position.set(moon.orbitRadius, 0, 0);
                 planetGroup.add(moonMesh);
+
+                // Create label for the moon
+                createLabel(moon.name, moonMesh);
 
                 if (planet.showOrbit) {
                     const moonOrbitPath = moon.createOrbitPath();
@@ -222,6 +259,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             starMesh.rotation.y += 0.00008;
+
+            textLabels.forEach((label) => {
+                label.lookAt(sceneInit.camera.position);
+            });
 
             requestAnimationFrame(animate);
             sceneInit.renderer.render(sceneInit.scene, sceneInit.camera);
