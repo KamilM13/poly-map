@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sceneInit.scene.add(starMesh);
 
         // Create label for the star
-        createLabel('Star', starMesh);
+        createLabel('Visage', starMesh);
 
         // Create planets with specific textures
         const planetSpecs = [
