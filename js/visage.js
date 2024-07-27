@@ -140,19 +140,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const initScene = async () => {
         const sceneInit = new SceneInit();
         sceneInit.initScene();
-
+///////////////////////////////////////////////////////////////////////////////////////////
         // Background
         const textureLoader = new THREE.TextureLoader();
-        const bgGeometry = new THREE.SphereGeometry(4000, 100, 100);
+        const bgGeometry = new THREE.SphereGeometry(4000, 2000, 2000);
         const bgMaterial = new THREE.MeshBasicMaterial({
-            map: textureLoader.load("image/Stars Background.png"),
+            map: textureLoader.load("image/Milky Way.jpg"),
             side: THREE.DoubleSide,
         });
         const bg = new THREE.Mesh(bgGeometry, bgMaterial);
         sceneInit.scene.add(bg);
 
         // Star
-        const starGeometry = new THREE.SphereGeometry(48, 400, 200);
+        const starGeometry = new THREE.SphereGeometry(48, 50, 50);
         const starMaterial = new THREE.MeshBasicMaterial({
             map: textureLoader.load("image/Red Star.jpg"),
         });
@@ -162,29 +162,29 @@ document.addEventListener('DOMContentLoaded', () => {
         // Create label for the star
         const labelPromises = [createLabel('Visage', starMesh)];
 
-        // Create planets with specific textures
+        // Create planets and moons
         const planetSpecs = [
             {
                 name: "Visage I",
                 size: 18,
-                texturePath: "image/Ceres.jpg",
-                orbitRadius: 100,
-                orbitSpeed: 0.0001,
+                texturePath: "image/Dead planet 1.jpg",
+                orbitRadius: 148,
+                orbitSpeed: 0.00005,
                 moons: [
                     {
                         name: "Draper Station",
                         size: 5,
-                        texturePath: "image/Red Moon.jpg",
-                        orbitRadius: 25,
-                        orbitSpeed: 0.001
+                        texturePath: "image/Station 1.jpg",
+                        orbitRadius: 30,
+                        orbitSpeed: 0.0002
                     }
                 ]
             },
             {
                 name: "Visage II",
                 size: 24,
-                texturePath: "image/Earth.jpeg",
-                orbitRadius: 300,
+                texturePath: "image/Tropical Earth.jpg",
+                orbitRadius: 348,
                 orbitSpeed: 0.00002,
                 moons: []
             },
@@ -192,13 +192,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 name: "Dwarf Planet",
                 size: 9,
                 texturePath: "image/Red Moon.jpg",
-                orbitRadius: 900,
+                orbitRadius: 948,
                 orbitSpeed: 0.00001,
                 moons: []
             },
-            // Add more planet specifications as needed
         ];
-
+///////////////////////////////////////////////////////////////////////////////////////////////////
         const showOrbitPaths = true; // Toggle this to turn orbit paths on or off
         const planets = createPlanets(planetSpecs, showOrbitPaths);
 

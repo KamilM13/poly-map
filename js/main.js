@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let textLabels = [];  // Initialize textLabels array
 
-    class Planet {
+    class System {
         constructor(radius, positionX, positionY, positionZ, textureFile) {
             this.radius = radius;
             this.positionX = positionX;
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const material = new THREE.LineBasicMaterial({ color: 0xffffff });
         const config = {
-            planets: [
+            systems: [
               // layer 0
               { name: 'Earth', size: 2, x: 0, y: 0, z: 0, texture: './image/earth.png', layer: 0 },
               // layer 1
@@ -337,11 +337,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ],
           };
 
-        const createPlanet = (name, size, x, y, z, texture) => {
-          const planet = new Planet(size, x, y, z, texture);
-          const planetMesh = planet.getMesh();
-          planetMesh.name = name;
-          return planetMesh;
+        const createSystem = (name, size, x, y, z, texture) => {
+          const system = new System(size, x, y, z, texture);
+          const systemMesh = system.getMesh();
+          systemMesh.name = name;
+          return systemMesh;
         };
 
         const createLabel = (text, parent) => {
@@ -361,20 +361,20 @@ document.addEventListener('DOMContentLoaded', () => {
           });
       };
 
-      const createPlanetsFromConfig = (config) => {
+      const createSystemsFromConfig = (config) => {
           const layers = {};
 
-          config.planets.forEach(({ name, size, x, y, z, texture, layer }) => {
+          config.systems.forEach(({ name, size, x, y, z, texture, layer }) => {
               if (!layers[layer]) layers[layer] = new THREE.Group();
-              const planetMesh = createPlanet(name, size, x, y, z, texture);
-              layers[layer].add(planetMesh);
-              createLabel(name, planetMesh);
+              const systemMesh = createSystem(name, size, x, y, z, texture);
+              layers[layer].add(systemMesh);
+              createLabel(name, systemMesh);
           });
 
           return layers;
       };
 
-      const findPlanetMeshByName = (layers, name) => {
+      const findPSystemMeshByName = (layers, name) => {
           for (const layer of Object.values(layers)) {
               const mesh = layer.getObjectByName(name);
               if (mesh) return mesh;
@@ -384,8 +384,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const createConnectionsFromConfig = (config, layers) => {
           config.connections.forEach(({ from, to }) => {
-              const fromMesh = findPlanetMeshByName(layers, from);
-              const toMesh = findPlanetMeshByName(layers, to);
+              const fromMesh = findPSystemMeshByName(layers, from);
+              const toMesh = findPSystemMeshByName(layers, to);
 
               if (fromMesh && toMesh) {
                   const points = [
@@ -399,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
           });
       };
 
-      const layers = createPlanetsFromConfig(config);
+      const layers = createSystemsFromConfig(config);
       createConnectionsFromConfig(config, layers);
 
       for (const layer of Object.values(layers)) {
@@ -425,9 +425,8 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const switchToSystemScene = (systemName) => {
-    const whitelist = ['Visage'];
+    const whitelist = ['Visage']; // add to whitelist any new systems created
     const includes = whitelist.includes(systemName);
-    // Redirect to the corresponding system HTML file
     if (includes) {
         window.location.href = `${systemName}.html`;
     }
